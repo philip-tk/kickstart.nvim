@@ -573,6 +573,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        sqls = { 'sqlfmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -700,7 +701,10 @@ require('lazy').setup({
       }
     end,
   },
-
+  {
+    'nanotee/sqls.nvim',
+    ft = 'sqls',
+  },
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
     -- change the command in the config to whatever the name of that colorscheme is.
@@ -832,6 +836,14 @@ require('lazy').setup({
     },
   },
 })
+
+require('lspconfig').sqls.setup {
+  on_attach = function(client, bufnr)
+    require('sqls').on_attach(client, bufnr)
+  end,
+}
+
+vim.keymap.set({ 'n', 'v' }, '<leader>rq', '<Plug>(sqls-execute-query)', { desc = 'Run query' })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
